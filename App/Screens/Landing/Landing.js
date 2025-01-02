@@ -16,7 +16,7 @@ export default function Landing({navigation}) {
         activeDotColor={colors.secondary}
         dotColor={colors.light}
         autoplay={true}
-        autoplayTimeout={7}
+        autoplayTimeout={4}
         
       >
         <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>

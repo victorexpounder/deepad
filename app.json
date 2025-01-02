@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "ac6fe789-3a25-4cbd-9294-1d8571351f7f"
+      }
+    },
+    "android": {
+      "package": "com.victorexpounder.deepad"
+    }
+  }
+}

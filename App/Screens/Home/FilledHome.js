@@ -4,11 +4,12 @@ import styles from './FilledHomeStyles'
 import colors from '../../assets/colors/colors'
 import NoteView from './NoteView'
 import notesData from '../../notesData'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const FilledHome = () => {
     
   return (
-    <View style={styles.body}>
+    <SafeAreaView style={styles.body}>
       <View style={styles.noteList}>
         <FlatList 
         data={notesData} 
@@ -36,7 +37,7 @@ const FilledHome = () => {
 
         
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

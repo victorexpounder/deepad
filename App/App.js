@@ -12,45 +12,65 @@ import TabNavigator from './Navigators/TabNavigator';
 import CreateNoteStack from './Navigators/CreateNoteStack';
 import CreateNote from './Screens/CreateNote/CreateNote';
 import colors from './assets/colors/colors';
+import Write from './Screens/Write/Write';
+import { PaperProvider } from 'react-native-paper';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-        <Stack.Navigator initialRouteName='StartScreen'>
-        <Stack.Screen
-          name="StartScreen"
-          component={StackNavigator}
-          options={{
-            headerShown: false,
-          }}
-        />
+    <PaperProvider>
+      <NavigationContainer>
+          <Stack.Navigator initialRouteName='StartScreen'>
+          <Stack.Screen
+            name="StartScreen"
+            component={StackNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
 
-        <Stack.Screen 
-          name="CreateNoteStack" 
-          component={CreateNote} 
-          options={{
-            headerBackTitle: 'Back',
-            headerTitle: "New Notes",
-            headerTintColor: colors.primary,
-            
-          }}
-        />
+          <Stack.Screen 
+            name="CreateNoteStack" 
+            component={CreateNote} 
+            options={{
+              headerBackTitle: 'Back',
+              headerTitle: "New Notes",
+              headerTintColor: colors.primary,
+              
+            }}
+          />
 
-        <Stack.Screen
-          name="Dashboard"
-          component={TabNavigator}
-          options={{
-            headerShown: false,
-          }}
-        />
+          <Stack.Screen 
+            name="WriteNote" 
+            component={Write} 
+            options={{
+              headerBackTitle: 'Back',
+              headerTitle: "",
+              headerTintColor: colors.primary, 
+              headerRight : ()=>(
+                <View>
+                  <Text>hiii</Text>
+                </View>
+              )
+              
+            }}
+          />
 
-      </Stack.Navigator>
+          <Stack.Screen
+            name="Dashboard"
+            component={TabNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
 
-      
-    </NavigationContainer>
+        </Stack.Navigator>
+
+        
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 

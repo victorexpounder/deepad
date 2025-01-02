@@ -8,7 +8,7 @@ import colors from '../../assets/colors/colors'
 
 const Finished = () => {
   const {container, bodyView, tabView, bodyContent, image, textCon, headText, subText} = styles
-  const empty = true
+  const empty = false
   return (
     <View style={{flex: 1}}>
       {empty?
