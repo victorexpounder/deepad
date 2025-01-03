@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@lexical/react": "^0.22.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.14",
     "@react-navigation/material-bottom-tabs": "^6.2.24",
     "@react-navigation/native": "^6.1.10",
@@ -17,6 +18,7 @@
     "expo": "^52.0.23",
     "expo-image-picker": "~16.0.3",
     "expo-status-bar": "~2.0.0",
+    "expo-video": "~2.0.3",
     "lexical": "^0.22.0",
     "react": "18.3.1",
     "react-native": "0.76.5",

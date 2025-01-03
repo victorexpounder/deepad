@@ -7,6 +7,9 @@
     },
     "android": {
       "package": "com.victorexpounder.deepad"
-    }
+    },
+    "plugins": [
+      "expo-video"
+    ]
   }
 }

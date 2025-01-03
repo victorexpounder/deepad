@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const BOTTOM_APPBAR_HEIGHT = 80;
 const MEDIUM_FAB_HEIGHT = 56;
 
-const ButtomBar = () => {
+const ButtomBar = ({selectImage, selectVideo}) => {
   const { bottom } = useSafeAreaInsets();
   const theme = useTheme();
   const [state, setState] = React.useState({ open: false });
@@ -47,12 +47,12 @@ const ButtomBar = () => {
             {
               icon: 'image',
               label: 'Image',
-              onPress: () => console.log('Pressed star'),
+              onPress: () => selectImage(),
             },
             {
               icon: 'video',
               label: 'Video',
-              onPress: () => console.log('Pressed email'),
+              onPress: () => selectVideo(),
             },
             
           ]}

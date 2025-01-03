@@ -1,14 +1,16 @@
-import { ScrollView, StyleSheet, TextInput, View, Image, Button } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, View, Image, Button, TouchableOpacity } from 'react-native';
 import React, { useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import colors from '../../assets/colors/colors';
 import BottomBar from '../../Components/BottomBar';
 import Hello from '../../Components/hello';
+import VideoScreen from '../../Components/Video';
 
 const Write = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [imageUri, setImageUri] = useState(null); // State for storing the image URI
+  const [imageUri, setImageUri] = useState([]); // State for storing the image URI
+  const [videoUri, setVideoUri] = useState([]); // State for storing the video URI
   const bodyInputRef = useRef();
   const [isEditingTitle, setIsEditingTitle] = useState(true); // Flag to manage focus
 
@@ -33,15 +35,45 @@ const Write = () => {
 
     // Open image picker
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: true,
       quality: 1,
     });
 
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri); // Update state with selected image URI
+      setImageUri([...imageUri, result.assets[0].uri]); // Update state with selected image URI
     }
   };
+
+  const selectVideo = async () => {
+    // Request media library permissions
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      alert('Permission to access the media library is required!');
+      return;
+    }
+
+    // Open image picker
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['videos'],
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setVideoUri([...videoUri, result.assets[0].uri]); // Update state with selected image URI
+    }
+  };
+
+  const removeImage = (key) =>{
+    const newimages = imageUri.filter((img, index)=> index !== key);
+    setImageUri(newimages)
+  }
+  
+  const removeVideo = (key) =>{
+    const newvideos = videoUri.filter((img, index)=> index !== key);
+    setVideoUri(newvideos) 
+  }
 
 
   return (
@@ -77,11 +109,24 @@ const Write = () => {
           onChangeText={(newBody) => setBody(newBody)}
         />
         {/* Display the selected image */}
-        {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
-        {/* Button to pick an image */}
-        <Button title="Add Image" onPress={selectImage} color={colors.primary} />
+
+        {imageUri.length > 0 && 
+          imageUri.map((img, index)=>(
+            <TouchableOpacity onLongPress={()=> removeImage(index)}>
+              <Image key={index} source={{ uri: img }} style={styles.image} />
+            </TouchableOpacity>
+          ))
+        }
+        {videoUri.length > 0 && 
+          videoUri.map((video, index)=>(
+            <TouchableOpacity onLongPress={()=> removeVideo(index)}>
+              <VideoScreen key={index} videoSource={video}/>
+            </TouchableOpacity>
+          ))
+        }
+
       </ScrollView>
-      <BottomBar />
+      <BottomBar selectImage={selectImage} selectVideo={selectVideo}/>
     </View>
   );
 };
@@ -101,6 +146,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     color: '#333',
     lineHeight: 24,
+    
   },
   title: {
     fontSize: 30,
