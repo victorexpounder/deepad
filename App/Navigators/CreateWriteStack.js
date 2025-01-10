@@ -3,17 +3,18 @@ import CreateNote from "../Screens/CreateNote/CreateNote";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from "../assets/colors/colors";
 import { Button } from "react-native-paper";
+import Write from "../Screens/Write/Write";
 
 const Stack = createNativeStackNavigator();
 
-const CreateNoteStack = () => {
+const CreateWriteStack = () => {
     return (
       <Stack.Navigator
         
       >
         <Stack.Screen 
             name="WriteNote" 
-            component={CreateNote} 
+            component={Write} 
             options={{
               headerBackTitle: 'Back',
               headerTitle: "New Notes",
@@ -26,4 +27,4 @@ const CreateNoteStack = () => {
     );
   };
 
-  export default CreateNoteStack
+  export default CreateWriteStack

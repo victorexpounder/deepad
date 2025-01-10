@@ -5,15 +5,18 @@ import colors from '../../assets/colors/colors'
 import NoteView from './NoteView'
 import notesData from '../../notesData'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNotes } from '../../contexts/NoteContext'
 
-const FilledHome = () => {
+const FilledHome = ({navigation, notes}) => {
     
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.noteList}>
         <FlatList 
-        data={notesData} 
+        data={notes} 
+        
         showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.category}  
         renderItem={({item})=>(
         <View style={styles.noteSec}>
             <View style={styles.noteHead}>
@@ -21,11 +24,13 @@ const FilledHome = () => {
                 <Text style={{fontSize: 15, fontWeight: '500',  textDecorationLine: 'underline', color: colors.primary }}> View All</Text>
             </View>
             <FlatList 
-            data={item.notes} 
+            data={item.notes}
+            
+            keyExtractor={(item) => item.id} 
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            renderItem={({item: {title, desc, pinned, category}}) => (
-               <NoteView title={title} desc={desc} category={category} pinned={pinned} Pcategory={item.category} finish={false}/>
+            renderItem={({item: {id, title, body, pinned, category}}) => (
+               <NoteView navigation={navigation} id={id} title={title} desc={body} category={category} pinned={pinned} Pcategory={item.category} finish={false}/>
             )}>
 
             </FlatList>

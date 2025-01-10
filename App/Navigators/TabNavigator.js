@@ -7,25 +7,28 @@ import CustomTabBar from './CustomTabBar';
 import Finished from '../Screens/Finished/Finished';
 import Search from '../Screens/Search/Search';
 import SettingsPage from '../Screens/SettingsPage/SettingsPage';
+import { NotesProvider } from '../contexts/NoteContext';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-    <Tab.Navigator 
-        screenOptions={{headerShown: false}}
-        tabBar={props => (
-            <CustomTabBar {...props} />
-          )}
-    >
-      <Tab.Screen name="Home" component={Home}  />
-      <Tab.Screen name="Finished" component={Finished}  />
-      <Tab.Screen name="CreateNote" component={CreateNote}/>
-      <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Settings" component={SettingsPage} />
+    
+        <Tab.Navigator 
+            screenOptions={{headerShown: false}}
+            tabBar={props => (
+                <CustomTabBar {...props} />
+              )}
+        >
+          <Tab.Screen name="Home" component={Home}  />
+          <Tab.Screen name="Finished" component={Finished}  />
+          <Tab.Screen name="CreateNote" component={CreateNote}/>
+          <Tab.Screen name="Search" component={Search} />
+          <Tab.Screen name="Settings" component={SettingsPage} />
 
-      
-    </Tab.Navigator>
+          
+        </Tab.Navigator>
+   
   )
 }
 

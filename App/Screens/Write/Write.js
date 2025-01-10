@@ -1,18 +1,27 @@
 import { ScrollView, StyleSheet, TextInput, View, Image, Button, TouchableOpacity } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import colors from '../../assets/colors/colors';
 import BottomBar from '../../Components/BottomBar';
 import Hello from '../../Components/hello';
 import VideoScreen from '../../Components/Video';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import notesDataMock from '../../notesDataMock';
+import * as Crypto from 'expo-crypto';
+import { useNotes } from '../../contexts/NoteContext';
 
-const Write = () => {
+const Write = ({ route }) => {
+  const { id } = route.params; // Access the id parameter
+  const { category } = route.params; // Access the id parameter
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [imageUri, setImageUri] = useState([]); // State for storing the image URI
   const [videoUri, setVideoUri] = useState([]); // State for storing the video URI
-  const bodyInputRef = useRef();
+  const [noteId, setNoteId] = useState(id); // State for storing the Note ID
   const [isEditingTitle, setIsEditingTitle] = useState(true); // Flag to manage focus
+  const bodyInputRef = useRef();
+  const {storedNotes, updateNote} = useNotes()
+  
 
   const handleTitleEnter = () => {
     const [newTitle, ...rest] = title.split('\n');
@@ -72,9 +81,98 @@ const Write = () => {
   
   const removeVideo = (key) =>{
     const newvideos = videoUri.filter((img, index)=> index !== key);
-    setVideoUri(newvideos) 
+    setVideoUri(newvideos)  
   }
 
+  //load previously typed note on page open
+  const loadNote = ()=>{
+    if(id)
+    {
+      // Find the category
+      const categoryIndex = storedNotes.findIndex((item) => item.category === category);
+      if (categoryIndex === -1) {
+        throw new Error(`Category '${category}' not found`);
+      }
+      const notes = storedNotes[categoryIndex].notes
+      const noteIndex = notes.findIndex((note)=> note.id === noteId)
+      if (noteIndex !== -1) {
+        console.log(notes[noteIndex])
+        const currentNote = notes[noteIndex]
+        setTitle(currentNote.title)
+        setBody(currentNote.body)
+        setImageUri(currentNote.images)
+        setVideoUri(currentNote.videos)
+      } else {
+        throw new Error('Note ID not found');
+      }
+    }else{
+      console.log("no id", id)
+    }
+  }
+
+  const saveNote = async (category) => {
+    try {
+      // Retrieve the current notes from AsyncStorage
+      
+      let notesData = storedNotes ? storedNotes : notesDataMock;
+  
+      // Find the category to update
+      const categoryIndex = notesData.findIndex((item) => item.category === category);
+      if (categoryIndex === -1) {
+        throw new Error(`Category '${category}' not found`);
+      }
+
+      const notes = notesData[categoryIndex].notes
+      if(noteId)
+      {
+        const noteIndex = notes.findIndex((note)=> note.id === noteId)
+        if (noteIndex !== -1) {
+          // Update the existing note
+          notes[noteIndex] = {
+            ...notes[noteIndex],
+            title: title.trim(),
+            body: body.trim(),
+            images: imageUri,
+            videos: videoUri,
+            category: category,
+            timestamp: new Date().toISOString(), // Update timestamp
+          };
+          console.log(notes[noteIndex])
+         
+        } else {
+          throw new Error('Note ID not found for update');
+        }
+      }else{
+        const newId = Crypto.randomUUID()
+        setNoteId(newId)
+        // Create a new note object
+        const newNote = {
+          id: newId, // Unique ID for the note
+          title: title.trim(), // Save trimmed title
+          body: body.trim(), // Save trimmed body
+          images: imageUri, // Save array of image URIs
+          videos: videoUri, // Save array of video URIs
+          timestamp: new Date().toISOString(), // Save creation timestamp
+        };
+        
+        // Add the new note to the selected category
+        notes.unshift(newNote);
+        console.log("new note added")
+      }
+      
+      notesData[categoryIndex].notes = notes
+     
+      // Save updated notes data back to AsyncStorage
+      await updateNote(notesData)
+      console.log('Note saved successfully');
+    } catch (error) {
+      console.error('Failed to save note:', error);
+    }
+  }; 
+
+  useEffect(()=>{
+    loadNote()
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -95,6 +193,7 @@ const Write = () => {
           onChangeText={(newTitle) => {
             if (isEditingTitle) {
               setTitle(newTitle); // Only update if editing is allowed
+              saveNote("Interesting Idea")
             }
           }}
           onBlur={() => setIsEditingTitle(true)} // Re-enable editing after focus change

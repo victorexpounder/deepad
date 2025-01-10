@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styles from './HomeStyles'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,41 +9,27 @@ import EmptyHome from './EmptyHome'
 import FilledHome from './FilledHome'
 import notesDataMock from '../../notesDataMock'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNotes } from '../../contexts/NoteContext'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Home = ({navigation}) => {
     const {container, bodyView, tabView, bodyContent, image, textCon, headText, subText} = styles
+    const {storedNotes} = useNotes()
+    const [notes, setNotes] = useState(storedNotes)
+    
     const data = true
 
-    const loadNote = async () => {
-      try {
-        const savedNote = await AsyncStorage.getItem('userNote');
-        if (savedNote !== null) {
-          console.log(JSON.parse(savedNote)); 
-        }
-        return '';
-      } catch (error) {
-        console.error('Failed to load note:', error);
-        return '';
-      }
-    };
-    const saveNote = async (notes) => {
-      try {
-        await AsyncStorage.setItem('userNote', JSON.stringify(notes));
-        console.log('Note saved!');
-        loadNote()
-      } catch (error) {
-        console.error('Failed to save note:', error);
-      }
-    };
-    
-    useEffect(()=>{
-        loadNote()
+    useFocusEffect(
+      React.useCallback(() => {
+        setNotes(storedNotes)
         
-    }, [])
+      }, [])
+    );
+
   return (
     <View style={container}>
       {data?
-          <FilledHome/>
+          <FilledHome navigation={navigation} notes={notes}/>
           :
           <EmptyHome/>
 

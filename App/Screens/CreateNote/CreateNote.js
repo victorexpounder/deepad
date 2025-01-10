@@ -56,7 +56,7 @@ const CreateNote = ({navigation}) => {
         alignItems: 'center',
         padding: 16,
       }}
-      onPress={() => navigation.navigate('WriteNote', {item})} 
+      onPress={() => navigation.navigate('WriteNote',{id:null, category:null})} 
     >
       <View style={{
         width: 46,

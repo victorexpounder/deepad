@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
+import React, { memo } from 'react'
 import colors from '../../assets/colors/colors'
 
-const NoteView = ({title, desc, category, pinned, Pcategory, finish, finished}) => {
+const NoteView = memo(({navigation, id, title, desc, category, pinned, Pcategory, finish, finished}) => {
 
   const pickColor = () =>{
     if(category == 'Routine Task'){
@@ -24,7 +24,7 @@ const NoteView = ({title, desc, category, pinned, Pcategory, finish, finished}) 
       {finish && (!finished || Pcategory == 'Pinned Notes')?
         ''
         :
-        <View style={{width: 230, marginLeft: 15,}}>
+        <TouchableOpacity style={{width: 230, marginLeft: 15,}} onPress={()=> navigation.navigate('WriteNote', {id, category})}>
           <View style={{height: 250 ,backgroundColor: Rcolor, padding: 15, borderTopEndRadius: 20, borderTopStartRadius: 20, borderBottomStartRadius:bottomRadius, borderBottomEndRadius: bottomRadius, gap: 10}}>
             <Text style={{fontSize: 20, fontWeight: '600', textAlign: 'left'}}> {title} </Text>
             <Text style={{fontSize: 15, fontWeight: '400', textAlign: 'left', color: colors.darkGray}}> {desc} </Text>
@@ -35,11 +35,11 @@ const NoteView = ({title, desc, category, pinned, Pcategory, finish, finished}) 
             </View>
   
           }
-        </View>
+        </TouchableOpacity>
       }
 
     </View>
   )
-}
+})
 
 export default NoteView
