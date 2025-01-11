@@ -88,12 +88,8 @@ const Write = ({ route }) => {
   const loadNote = ()=>{
     if(id)
     {
-      // Find the category
-      const categoryIndex = storedNotes.findIndex((item) => item.category === category);
-      if (categoryIndex === -1) {
-        throw new Error(`Category '${category}' not found`);
-      }
-      const notes = storedNotes[categoryIndex].notes
+      
+      const notes = storedNotes
       const noteIndex = notes.findIndex((note)=> note.id === noteId)
       if (noteIndex !== -1) {
         console.log(notes[noteIndex])
@@ -112,17 +108,8 @@ const Write = ({ route }) => {
 
   const saveNote = async (category) => {
     try {
-      // Retrieve the current notes from AsyncStorage
-      
-      let notesData = storedNotes ? storedNotes : notesDataMock;
-  
-      // Find the category to update
-      const categoryIndex = notesData.findIndex((item) => item.category === category);
-      if (categoryIndex === -1) {
-        throw new Error(`Category '${category}' not found`);
-      }
 
-      const notes = notesData[categoryIndex].notes
+      const notes = storedNotes ? storedNotes : [];
       if(noteId)
       {
         const noteIndex = notes.findIndex((note)=> note.id === noteId)
@@ -152,6 +139,8 @@ const Write = ({ route }) => {
           body: body.trim(), // Save trimmed body
           images: imageUri, // Save array of image URIs
           videos: videoUri, // Save array of video URIs
+          category: category,
+          pinned: false, // Default to unpinned
           timestamp: new Date().toISOString(), // Save creation timestamp
         };
         
@@ -160,10 +149,10 @@ const Write = ({ route }) => {
         console.log("new note added")
       }
       
-      notesData[categoryIndex].notes = notes
+      
      
       // Save updated notes data back to AsyncStorage
-      await updateNote(notesData)
+      await updateNote(notes)
       console.log('Note saved successfully');
     } catch (error) {
       console.error('Failed to save note:', error);

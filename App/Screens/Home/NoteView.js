@@ -19,6 +19,8 @@ const NoteView = memo(({navigation, id, title, desc, category, pinned, Pcategory
   const Rcolor = pickColor()
   const bottomRadius = Pcategory == 'Pinned Notes'? 0 : 20
 
+
+
   return (
     <View>
       {finish && (!finished || Pcategory == 'Pinned Notes')?

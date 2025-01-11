@@ -21,7 +21,7 @@ export const NotesProvider = ({ children }) =>{
             setStoredNotes(JSON.parse(savedNote))
             console.log(JSON.parse(savedNote)); 
           }else{
-            saveNote(notesDataMock)
+            console.log('No notes');
           }
           return '';
         } catch (error) {
@@ -40,6 +40,17 @@ export const NotesProvider = ({ children }) =>{
       };
 
       const updateNote = async(notesData) =>{
+        try {
+            // Save updated notes data back to AsyncStorage
+            await AsyncStorage.setItem('userNote', JSON.stringify(notesData));
+            setStoredNotes(notesData)
+            console.log('Note Updated');
+        } catch (error) {
+            console.error('Failed to update note:', error);
+        }
+      }
+
+      const deleteNote = async(id) =>{
         try {
             // Save updated notes data back to AsyncStorage
             await AsyncStorage.setItem('userNote', JSON.stringify(notesData));

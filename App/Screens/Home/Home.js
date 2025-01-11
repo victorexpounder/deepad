@@ -19,13 +19,6 @@ const Home = ({navigation}) => {
     
     const data = true
 
-    useFocusEffect(
-      React.useCallback(() => {
-        setNotes(storedNotes)
-        
-      }, [])
-    );
-
   return (
     <View style={container}>
       {data?
