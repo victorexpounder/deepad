@@ -1,12 +1,15 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, useColorScheme, View } from "react-native";
 import colors from "../assets/colors/colors";
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
+    const scheme = useColorScheme()
+    const dark = scheme === 'dark'
+    const unfocused = dark? '#fff' : '#222'
     return (
-      <View style={{ flexDirection: 'row', height: 80, backgroundColor: colors.light, borderCenterRadius: 20, position: 'relative' }}>
+      <View style={{ flexDirection: 'row', height: 80, backgroundColor: dark? '#18042b' : colors.light, borderCenterRadius: 20, position: 'relative' }}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const label = options.tabBarLabel !== undefined
@@ -44,13 +47,13 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
         switch (route.name) {
           case 'Home':
             iconComponent = (
-              <MaterialCommunityIcons name={isFocused ? 'home-variant' : 'home-variant-outline'} size={25} color={isFocused ? '#673ab7' : '#222'} />
+              <MaterialCommunityIcons name={isFocused ? 'home-variant' : 'home-variant-outline'} size={25} color={isFocused ? '#673ab7' : unfocused} />
               
             );
             break;
           case 'Finished':
             iconComponent = (
-              <MaterialCommunityIcons name={isFocused ? 'clipboard-check' : 'clipboard-check-outline'} size={25} color={isFocused ? '#673ab7' : '#222'} />
+              <MaterialCommunityIcons name={isFocused ? 'clipboard-check' : 'clipboard-check-outline'} size={25} color={isFocused ? '#673ab7' : unfocused} />
             );
             break;
           case 'CreateNote':
@@ -60,12 +63,12 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             break;
           case 'Search':
             iconComponent = (
-              <Ionicons name={isFocused ? 'search' : 'search-outline'} size={25} color={isFocused ? '#673ab7' : '#222'} />
+              <Ionicons name={isFocused ? 'search' : 'search-outline'} size={25} color={isFocused ? '#673ab7' : unfocused} />
             );
             break;
           case 'Settings':
             iconComponent = (
-              <Ionicons name={isFocused ? 'settings' : 'settings-outline'} size={25} color={isFocused ? '#673ab7' : '#222'} />
+              <Ionicons name={isFocused ? 'settings' : 'settings-outline'} size={25} color={isFocused ? '#673ab7' : unfocused} />
             );
             break;
           default:
@@ -85,14 +88,14 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
             {label == 'CreateNote'? 
-                <View style={{backgroundColor: colors.primaryBackground,  borderRadius: 50, position: 'absolute', top: -50, width: 'auto' }}>
+                <View style={{backgroundColor: dark? colors.darkBackground : colors.primaryBackground,  borderRadius: 50, position: 'absolute', top: -40, width: 'auto' }}>
                     {iconComponent} 
                 </View>
                 :
                 
                 <View style={{alignItems: 'center'}}>
                     {iconComponent}
-                    <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>{label}</Text>
+                    <Text style={{ color: isFocused ? '#673ab7' : unfocused }}>{label}</Text>
                 </View>
                 
 

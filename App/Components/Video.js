@@ -14,18 +14,7 @@ export default function VideoScreen({videoSource}) {
   return (
     <View style={styles.contentContainer}>
       <VideoView style={styles.video} player={player} allowsFullscreen allowsPictureInPicture />
-      <View style={styles.controlsContainer}>
-        <Button
-          title={isPlaying ? 'Pause' : 'Play'}
-          onPress={() => {
-            if (isPlaying) {
-              player.pause();
-            } else {
-              player.play();
-            }
-          }}
-        />
-      </View>
+      
     </View>
   );
 }

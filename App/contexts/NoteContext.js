@@ -52,12 +52,42 @@ export const NotesProvider = ({ children }) =>{
 
       const deleteNote = async(id) =>{
         try {
-            // Save updated notes data back to AsyncStorage
-            await AsyncStorage.setItem('userNote', JSON.stringify(notesData));
-            setStoredNotes(notesData)
-            console.log('Note Updated');
+          const notes = storedNotes
+          const noteIndex = notes.findIndex((note)=> note.id === id)
+          if (noteIndex !== -1) {
+            notes.splice(noteIndex, 1);
+          } else {
+            throw new Error('Note ID not found');
+          }
+          // Save updated notes data back to AsyncStorage
+          await AsyncStorage.setItem('userNote', JSON.stringify(notes));
+          setStoredNotes(notes)
+          console.log(`Note ${id} deleted`);
+          console.log(notes)
         } catch (error) {
-            console.error('Failed to update note:', error);
+            console.error('Failed to Delete note:', error);
+        }
+      }
+
+      const pinNote = async(id) =>{
+        try {
+          const notes = storedNotes
+          const noteIndex = notes.findIndex((note)=> note.id === id)
+          if (noteIndex !== -1) {
+            notes[noteIndex] = {
+              ...notes[noteIndex],
+              pinned: !notes[noteIndex].pinned,
+            };
+          } else {
+            throw new Error('Note ID not found');
+          }
+          // Save updated notes data back to AsyncStorage
+          await AsyncStorage.setItem('userNote', JSON.stringify(notes));
+          setStoredNotes(notes)
+          console.log(`Note ${id} pinned`);
+          console.log(notes)
+        } catch (error) {
+            console.error('Failed to pin note:', error);
         }
       }
       
@@ -66,7 +96,7 @@ export const NotesProvider = ({ children }) =>{
       }, [])
     return (
         <NoteContext.Provider
-            value={{storedNotes, updateNote}}
+            value={{storedNotes, updateNote, deleteNote, pinNote}}
         >
             {children}
         </NoteContext.Provider>

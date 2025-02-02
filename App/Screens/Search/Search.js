@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
+import { View, Text, useColorScheme } from 'react-native'
 import React from 'react'
 import colors from '../../assets/colors/colors'
 
 const Search = () => {
+  const colorscheme = useColorScheme()
   return (
-    <View style={{backgroundColor: colors.primary}}>
+    <View style={{backgroundColor: colorscheme ==='dark'? '#333' : '#fff', flex: 1}}>
       <Text>Search</Text>
     </View>
   )

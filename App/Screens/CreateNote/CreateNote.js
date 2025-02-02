@@ -1,12 +1,16 @@
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, useColorScheme } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../../assets/colors/colors'
-import styles from './CreateNoteStyle'
-const {cnCon, HeadText} = styles
+import CreateNotestyles from './CreateNoteStyle'
+
 const CreateNote = ({navigation}) => {
+  const scheme = useColorScheme()
+  const dark = scheme === "dark"
+  const styles = CreateNotestyles(dark)
+  const {cnCon, HeadText} = styles
   const listData = [
     {
       name: "Interesting Idea",
@@ -56,7 +60,7 @@ const CreateNote = ({navigation}) => {
         alignItems: 'center',
         padding: 16,
       }}
-      onPress={() => navigation.navigate('WriteNote',{id:null, category:null})} 
+      onPress={() => navigation.navigate('WriteNote',{id:null, category: item.name})} 
     >
       <View style={{
         width: 46,
@@ -92,7 +96,7 @@ const CreateNote = ({navigation}) => {
   );
 
   return (
-    <View style={{backgroundColor: colors.light, flex: 1}}>
+    <View style={{backgroundColor: dark? colors.darkBackground : colors.light, flex: 1}}>
       <View style={cnCon}>
         <Text style={HeadText}>What Do You Want To Notes?</Text>
         <View style={{flex: 1}}>

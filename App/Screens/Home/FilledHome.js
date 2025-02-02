@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, useColorScheme } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './FilledHomeStyles'
 import colors from '../../assets/colors/colors'
@@ -8,20 +8,12 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNotes } from '../../contexts/NoteContext'
 import notesDataMock from '../../notesDataMock'
 import { useFocusEffect } from '@react-navigation/native'
+import Menu from '../../Components/Menu'
+import createStyles from './FilledHomeStyles'
 
-const FilledHome = ({navigation, notes}) => {
-  const [refresh, setRefresh] = useState(false);
-
-  const forceRefresh = () => {
-    setRefresh(prev => !prev); // Toggle state to trigger a re-render
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      forceRefresh();
-    }, [])
-  );
+const FilledHome = ({navigation, notes, refresh, forceRefresh}) => {
+  const scheme = useColorScheme()
+  const styles = createStyles(scheme)
     
   return (
     <SafeAreaView style={styles.body}>
@@ -33,7 +25,7 @@ const FilledHome = ({navigation, notes}) => {
         renderItem={({item})=>(
         <View style={styles.noteSec}>
             <View style={styles.noteHead}>
-                <Text style={{fontSize: 15, fontWeight: '700'}}> {item.category} </Text>
+                <Text style={{fontSize: 15, fontWeight: '700', color: scheme==='dark'? '#fff': ''}}> {item.category} </Text>
                 <Text style={{fontSize: 15, fontWeight: '500',  textDecorationLine: 'underline', color: colors.primary }}> View All</Text>
             </View>
             <FlatList 
@@ -42,10 +34,25 @@ const FilledHome = ({navigation, notes}) => {
             keyExtractor={(item) => item.id} 
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            renderItem={({item: {id, title, body, pinned, category}}) => (
-               item.category == category &&
-                <NoteView navigation={navigation} id={id} title={title} desc={body} category={category} pinned={pinned} Pcategory={item.category} finish={false}/>
-            )}>
+            renderItem={({item: {id, title, body, pinned, category}}) => {
+              const shouldRender = 
+              (pinned && item.category === 'Pinned Notes') || 
+              (!pinned && category === item.category)
+
+               return shouldRender &&(
+                 <NoteView 
+                   refresh={forceRefresh} 
+                   navigation={navigation} 
+                   id={id} 
+                   title={title} 
+                   desc={body} 
+                   category={category} 
+                   pinned={pinned} 
+                   Pcategory={item.category} 
+                   finish={false}
+                   />
+               )
+            }}>
 
             </FlatList>
         </View>
@@ -56,6 +63,8 @@ const FilledHome = ({navigation, notes}) => {
 
         
       </View>
+
+      
     </SafeAreaView>
   )
 }

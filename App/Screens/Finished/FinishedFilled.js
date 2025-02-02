@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, useColorScheme } from 'react-native'
 import React from 'react'
 import colors from '../../assets/colors/colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,12 +9,13 @@ import styles from '../Home/FilledHomeStyles'
 
 
 const FinishedFilled = () => {
-  
+  const scheme = useColorScheme()
+  const dark = scheme === 'dark'
   
 
   return (
     <View style={{flex: 1}}>
-      <View style={{flex: 1, backgroundColor: colors.primary, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15, paddingTop: 20}}>
+      <View style={{flex: 1, backgroundColor: dark? '#18042b' : colors.primary, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingLeft: 15, paddingTop: 20}}>
         <View style={{width: '50%'}}>
             <Text style={{color: colors.light, fontWeight: '700', fontSize:20}}>Amazing Journey!</Text>
             <Text style={{color: colors.light, fontWeight: '300', fontSize: 14}}>You have successfully finished 5 notes</Text>
@@ -25,7 +26,7 @@ const FinishedFilled = () => {
         /> 
       </View>
 
-      <View style={{flex: 4, backgroundColor: colors.primaryBackground,}}>
+      <View style={{flex: 4, backgroundColor:  dark? colors.darkBackground : colors.primaryBackground,}}>
       <FlatList 
         data={notesData} 
         showsVerticalScrollIndicator={false}

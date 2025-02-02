@@ -1,12 +1,8 @@
-import { ScrollView, StyleSheet, TextInput, View, Image, Button, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, TextInput, View, Image, Button, TouchableOpacity, useColorScheme } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import colors from '../../assets/colors/colors';
 import BottomBar from '../../Components/BottomBar';
-import Hello from '../../Components/hello';
 import VideoScreen from '../../Components/Video';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import notesDataMock from '../../notesDataMock';
 import * as Crypto from 'expo-crypto';
 import { useNotes } from '../../contexts/NoteContext';
 
@@ -21,7 +17,9 @@ const Write = ({ route }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(true); // Flag to manage focus
   const bodyInputRef = useRef();
   const {storedNotes, updateNote} = useNotes()
-  
+  const scheme = useColorScheme()
+  const dark = scheme === "dark"
+  const styles = createStyles(dark)
 
   const handleTitleEnter = () => {
     const [newTitle, ...rest] = title.split('\n');
@@ -182,7 +180,7 @@ const Write = ({ route }) => {
           onChangeText={(newTitle) => {
             if (isEditingTitle) {
               setTitle(newTitle); // Only update if editing is allowed
-              saveNote("Interesting Idea")
+              saveNote(category)
             }
           }}
           onBlur={() => setIsEditingTitle(true)} // Re-enable editing after focus change
@@ -194,7 +192,10 @@ const Write = ({ route }) => {
           editable
           ref={bodyInputRef}
           value={body}
-          onChangeText={(newBody) => setBody(newBody)}
+          onChangeText={(newBody) =>{
+            setBody(newBody)
+            saveNote(category)
+          }}
         />
         {/* Display the selected image */}
 
@@ -221,18 +222,18 @@ const Write = ({ route }) => {
 
 export default Write;
 
-const styles = StyleSheet.create({
+const createStyles = (dark) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fdfdfd',
+    backgroundColor: dark? '#000' : '#fdfdfd',
   },
   textView: {
     marginBottom: 100,
   },
   textInput: {
     paddingVertical: 4,
-    color: '#333',
+    color: dark? '#fff' : '#333',
     lineHeight: 24,
     
   },

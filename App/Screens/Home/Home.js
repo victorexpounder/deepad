@@ -16,16 +16,28 @@ const Home = ({navigation}) => {
     const {container, bodyView, tabView, bodyContent, image, textCon, headText, subText} = styles
     const {storedNotes} = useNotes()
     const [notes, setNotes] = useState(storedNotes)
+    const [refresh, setRefresh] = useState(false);
+     
     
-    const data = true
+      const forceRefresh = () => {
+        setRefresh(prev => !prev); // Toggle state to trigger a re-render
+      };
+    
+      useFocusEffect(
+        React.useCallback(() => {
+          // Do something when the screen is focused
+          forceRefresh();
+        }, [])
+      );
+
+      const data = storedNotes.length > 0
 
   return (
     <View style={container}>
       {data?
-          <FilledHome navigation={navigation} notes={notes}/>
+          <FilledHome navigation={navigation} notes={notes} refresh={refresh} forceRefresh={forceRefresh}/>
           :
           <EmptyHome/>
-
       }
 
     

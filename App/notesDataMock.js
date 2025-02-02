@@ -12,13 +12,13 @@ const notesDataMock = [
         ]
     },
     {
-        category : 'CheckList',
+        category : 'Buying Something',
         notes: [
             
         ]
     },
     {
-        category : 'Routine Task',
+        category : 'Routine Tasks',
         notes: [
             
         ]

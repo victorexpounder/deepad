@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import colors from "../../assets/colors/colors";
 
 
-const styles = StyleSheet.create({
+const CreateNotestyles = (dark) => StyleSheet.create({
 
     cnCon : {
         flex : 1,
@@ -10,9 +10,10 @@ const styles = StyleSheet.create({
     },
     HeadText: {
         fontSize: 28,
-        fontWeight: '700'
+        fontWeight: '700',
+        color: dark? '#fff' : ''
     }
 })
 
 
-export default styles
+export default CreateNotestyles
