@@ -4,10 +4,10 @@
     "slug": "deepad",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/iconicon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/iconicon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#6A3EA1"
     },

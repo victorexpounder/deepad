@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const BOTTOM_APPBAR_HEIGHT = 80;
 const MEDIUM_FAB_HEIGHT = 56;
 
-const ButtomBar = ({selectImage, selectVideo}) => {
+const ButtomBar = ({selectImage, selectVideo, aiGenerate}) => {
   const { bottom } = useSafeAreaInsets();
   const theme = useTheme();
   const [state, setState] = React.useState({ open: false });
@@ -31,6 +31,7 @@ const ButtomBar = ({selectImage, selectVideo}) => {
       safeAreaInsets={{ bottom }}
     >
         
+      <Appbar.Action icon="robot" color={theme.colors.primary}  onPress={() => aiGenerate()} />
       <Appbar.Action icon="pin" onPress={() => {}} />
       <Appbar.Action icon="clipboard-check" color='green' onPress={() => {}} />
       <Appbar.Action icon="delete" color='red' onPress={() => {}} />

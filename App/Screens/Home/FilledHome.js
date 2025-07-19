@@ -29,7 +29,7 @@ const FilledHome = ({navigation, notes, refresh, forceRefresh}) => {
                 <Text style={{fontSize: 15, fontWeight: '500',  textDecorationLine: 'underline', color: colors.primary }}> View All</Text>
             </View>
             <FlatList 
-            data={notes}
+            data={[...notes].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))}
             extraData={refresh}
             keyExtractor={(item) => item.id} 
             horizontal={true}
@@ -40,7 +40,7 @@ const FilledHome = ({navigation, notes, refresh, forceRefresh}) => {
               (!pinned && category === item.category)
 
                return shouldRender &&(
-                 <NoteView 
+                 <NoteView
                    refresh={forceRefresh} 
                    navigation={navigation} 
                    id={id} 

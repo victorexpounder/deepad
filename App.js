@@ -4,19 +4,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 
-import Landing from './Screens/Landing/Landing';
-import Profile from './Screens/Profile';
-import Home from './Screens/Home/Home';
-import StackNavigator from './Navigators/StackNavigator';
-import TabNavigator from './Navigators/TabNavigator';
+import Landing from './App/Screens/Landing/Landing';
+import Profile from './App/Screens/Profile';
+import Home from './App/Screens/Home/Home';
+import StackNavigator from './App/Navigators/StackNavigator';
+import TabNavigator from './App/Navigators/TabNavigator';
 
-import CreateNote from './Screens/CreateNote/CreateNote';
-import colors from './assets/colors/colors';
-import Write from './Screens/Write/Write';
+import CreateNote from './App/Screens/CreateNote/CreateNote';
+import colors from './App/assets/colors/colors';
+import Write from './App/Screens/Write/Write';
 import { PaperProvider } from 'react-native-paper';
-import { NotesProvider } from './contexts/NoteContext';
+import { NotesProvider } from './App/contexts/NoteContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import { Keyboard } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,7 +64,12 @@ export default function App() {
                     backgroundColor: dark? '#000' : '#fff'
                   },
                   headerRight : ()=>(
-                    <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Keyboard.dismiss(); // close the keyboard
+                        
+                      }}
+                    >
                       <Text style={{ color: colors.primary }}>Done</Text>
                     </TouchableOpacity>
                   )

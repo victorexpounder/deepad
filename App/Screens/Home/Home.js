@@ -30,7 +30,7 @@ const Home = ({navigation}) => {
         }, [])
       );
 
-      const data = storedNotes.length > 0
+      const data = storedNotes?.length > 0
 
   return (
     <View style={container}>

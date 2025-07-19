@@ -18,6 +18,12 @@ const notesDataMock = [
         ]
     },
     {
+        category : 'Goals',
+        notes: [
+            
+        ]
+    },
+    {
         category : 'Routine Tasks',
         notes: [
             
