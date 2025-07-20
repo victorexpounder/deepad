@@ -70,7 +70,7 @@ const Write = ({ route }) => {
       method: "POST",
       url: "https://api.edenai.run/v2/text/chat",
       headers: {
-        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNGQwNzEyZDAtZGVmYS00MTQwLWFiZDEtMDAxYjNiZmQyNzNmIiwidHlwZSI6ImFwaV90b2tlbiJ9.ccld4LAcYhWJ_wtctxyUftSmyDE8XJYf6KCSmddGH9Y`,
+        authorization: `Bearer `,
       },
       data: {
         providers: "openai/gpt-4",
@@ -243,6 +243,10 @@ const Write = ({ route }) => {
     handleFinish()
   }, [])
 
+  useEffect(() => {
+    saveNote(category)
+  }, [body, title, imageUri, videoUri]); // Save note whenever these states change
+
 
   return (
     <View style={styles.container}>
@@ -263,8 +267,7 @@ const Write = ({ route }) => {
           onChangeText={(newTitle) => {
             if (isEditingTitle) {
               setTitle(newTitle); // Only update if editing is allowed
-              console.log('Title:', title);
-              saveNote(category)
+              
             }
           }}
           onBlur={() => setIsEditingTitle(true)} // Re-enable editing after focus change
@@ -278,7 +281,7 @@ const Write = ({ route }) => {
           value={body}
           onChangeText={(newBody) =>{
             setBody(newBody)
-            saveNote(category)
+            
           }}
         />
         {/* Display the selected image */}
